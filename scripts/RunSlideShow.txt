@@ -1,0 +1,4 @@
+tell application "Microsoft PowerPoint"
+	activate
+	run slide show slide show settings of active presentation
+end tell

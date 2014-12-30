@@ -1,0 +1,3 @@
+tell application "Microsoft PowerPoint"
+	exit slide show slide show view of slide show window of active presentation
+end tell

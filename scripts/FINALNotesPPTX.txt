@@ -1,0 +1,31 @@
+tell application "Microsoft PowerPoint"
+	tell the active presentation
+		set thisDocumentName to the name of it
+	end tell
+	set the combinedPresenterNotes to ""
+	set counter to 0
+	repeat with tSlide in (get slides of active presentation)
+		set tNote to ""
+		repeat with t_shape in (get shapes of notes page of tSlide)
+			tell t_shape to if has text frame then tell its text frame to if has text then
+				set tNote to content of its text range -- get the note of this slide
+				set the combinedPresenterNotes to ¬
+					combinedPresenterNotes &  return & ¬
+					"PROCSLIDE " & (counter as string) & ": " & tNote
+				exit repeat
+			end if
+		end repeat
+		if tNote does not contain "STUDENT=HIDE" then
+			
+		end if
+		set counter to counter + 1
+	end repeat
+end tell
+tell application "TextEdit"
+	activate
+	set document1 to ¬
+		open ((path to desktop folder as text) & "Notes.txt")
+	set theDate to current date
+	set text of document1 to combinedPresenterNotes
+	save document1
+end tell

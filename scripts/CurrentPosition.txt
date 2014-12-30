@@ -1,0 +1,8 @@
+/usr/bin/osascript
+tell application "Microsoft PowerPoint"
+	set theWindow to (get slide show window of active presentation)
+	set theView to slide show view of theWindow
+	set currentIndex to (get current show position of theView)
+	log currentIndex
+	log "There is no active presentation dumbfuck"
+end tell
