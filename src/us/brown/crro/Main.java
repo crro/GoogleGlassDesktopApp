@@ -2,10 +2,16 @@ package us.brown.crro;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.scilab.forge.jlatexmath.TeXConstants;
+import org.scilab.forge.jlatexmath.TeXFormula;
+import org.scilab.forge.jlatexmath.TeXIcon;
 
+import javax.imageio.ImageIO;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
 import java.util.ArrayList;
@@ -52,6 +58,61 @@ public class Main {
         ScriptEngine engine = mgr.getEngineByName("AppleScript");
         engine.eval(script);
     }
+
+    /**
+     * This method creates the image from the equation given.
+     * @param equation - The equation to parse
+     * @return
+     */
+    public static BufferedImage createImage(String equation) {
+        TeXFormula fomule = new TeXFormula(equation);
+        TeXIcon ti = fomule.createTeXIcon(
+                TeXConstants.STYLE_DISPLAY, 40);
+        BufferedImage b = new BufferedImage(ti.getIconWidth(), ti
+                .getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+        ti.paintIcon(new JLabel(), b.getGraphics(), 0, 0);
+        return b;
+    }
+
+    /**
+     * This method process the notes in order to preload the necesary equations and store them
+     * in a Hashtable.
+     * @param notes
+     */
+    public static void processNotes(String notes) {
+        System.out.println("Processing: " + notes);
+        String[] notesWords = notes.split("\n");
+        for (String note : notesWords) {
+            BufferedImage bImage = null;
+            String equation = null;
+            if (note.contains("PROCSLIDE")) {
+                //then we change the slide
+                if (note.contains("<<")) {
+                    String[] notesDivided = note.split("<<");
+                    //we generate the image here and add it to the HashTable
+                    equation = notesDivided[1].substring(0, notesDivided[1].length() - 2);
+                    bImage = createImage(equation);
+                }
+            } else if (note.contains("<<") && note.contains(">>")){
+                //we post and get an image to post
+                equation = note.substring(2, note.length() - 2);
+                bImage = createImage(equation);
+            } else {/*Ignore it*/}
+            if (bImage != null && equation != null) {
+                //Send it to server
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                try {
+                    ImageIO.write(bImage, "jpg", baos);
+                    byte[] bytes = baos.toByteArray();
+                    //We generate the request and send the file to the server to the given session
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
     /**
      * This function returns the current position of the active presentation.
      * It is called by a timer in charge of keeping track of the current status of the presentation
@@ -79,7 +140,7 @@ public class Main {
         }
 
         line = null;
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
         if (result.exitValue() != 0) {
             System.out.println("Presentation is not in presentation mode.");
             //We return negative one because there isn't a new presentation
@@ -91,9 +152,9 @@ public class Main {
             while ((line = out.readLine()) != null) {
                 output.append(line);
             }
-            int position = Integer.parseInt(output.toString());
             //we return postion once we have an active presentation
-            return position;
+            return Integer.parseInt(output.toString());
+
         }
     }
 
@@ -120,7 +181,6 @@ public class Main {
      * Main line method, this is where it all begins.
      */
     public static void main(String[] args) {
-
         URI uri = URI.create("ws://googleglassserver.herokuapp.com/incoming/");
         try {
             // We first get all the notes
