@@ -117,23 +117,23 @@ public class PowerPointSocket extends WebSocketAdapter {
         try {
             String words[] = message.split(" ");
             if (words[0].equals("Action")) {
-                    if (words[1].equals("Start")) {
-                        Main.executePresentationTask(Main.START_PRESENTATION);
-                        //This also begins the constant check of status
-                        _timerIndex.start();
-                    } else if (words[1].equals("Next")) {
-                        Main.executePresentationTask((Main.NEXT_SLIDE));
-                    } else if (words[1].equals("Previous")) {
-                        Main.executePresentationTask(Main.PREVIOUS_SLIDE);
-                    } else if (words[1].equals("End")) {
-                        Main.executePresentationTask(Main.END_PRESENTATION);
-                        _timerIndex.stop();
-                        _updateIndexClient.stop();
-                    } else if (words[1].equals("Notes")) {
-                        getSession().getRemote().sendStringByFuture(Main.presentationNotes);
-                    } else {
-                        System.out.println("Invalid command");
-                    }
+                if (words[1].equals("Start")) {
+                    Main.executePresentationTask(Main.START_PRESENTATION);
+                    //This also begins the constant check of status
+                    _timerIndex.start();
+                } else if (words[1].equals("Next")) {
+                    Main.executePresentationTask((Main.NEXT_SLIDE));
+                } else if (words[1].equals("Previous")) {
+                    Main.executePresentationTask(Main.PREVIOUS_SLIDE);
+                } else if (words[1].equals("End")) {
+                    Main.executePresentationTask(Main.END_PRESENTATION);
+                    _timerIndex.stop();
+                    _updateIndexClient.stop();
+                } else if (words[1].equals("Notes")) {
+                    getSession().getRemote().sendStringByFuture(Main.presentationNotes);
+                } else {
+                    System.out.println("Invalid command");
+                }
 
            }
         } catch (IOException e) {

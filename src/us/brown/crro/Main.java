@@ -181,6 +181,7 @@ public class Main {
      * Main line method, this is where it all begins.
      */
     public static void main(String[] args) {
+        new Manager();
         URI uri = URI.create("ws://googleglassserver.herokuapp.com/incoming/");
         try {
             // We first get all the notes
