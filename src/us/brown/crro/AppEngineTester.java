@@ -3,6 +3,7 @@ package us.brown.crro;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.api.Request;
+import org.eclipse.jetty.client.util.BytesContentProvider;
 import org.eclipse.jetty.http.HttpHeader;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
@@ -32,19 +33,21 @@ public class AppEngineTester {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             File outputfile = new File("/Users/David/Desktop/saved.png");
-
-            ImageIO.write(b, "png", outputfile);
+            //ImageIO.write(b, "png", outputfile);
+            ImageIO.write(b, "png", baos);
             //Now I'm going to try and put it into an http request
             HttpClient httpClient = new HttpClient();
             httpClient.start();
             int status;
-//            Request request = httpClient.POST("http://localhost:8888/desktopappserver").param("SESSION", "1111").param("ACTION", "IMAGE")
-//                    .param("EQUATION", "a");
+            Request request = httpClient.POST("http://localhost:8888/desktopappserver").param("SESSION", "1881").param("ACTION", "IMAGE")
+                    .param("EQUATION", "b");
 //            request.file(Paths.get("/Users/David/Desktop/saved.png")); //take this out since we are not posting anymore
             //request.header(HttpHeader.CONNECTION, "Keep-Alive");
             //Request r = request.content(new PathContentProvider(outputfile.toPath()), "image/png");
+            Request r = request.content(new BytesContentProvider("image/png", baos.toByteArray()), "image/png");
+
             //request.param("Equation", math);
-            ContentResponse response = httpClient.GET("http://localhost:8888/googleglassserver?ACTION=IMAGE&EQUATION=a&SESSION=1111");
+            ContentResponse response = httpClient.GET("http://localhost:8888/googleglassserver?ACTION=IMAGE&EQUATION=b&SESSION=1881");
             //ContentResponse response = request.send();
             String responseTxt;
             status = response.getStatus();

@@ -1,5 +1,6 @@
 package us.brown.crro;
 
+import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.scilab.forge.jlatexmath.TeXConstants;
@@ -74,44 +75,7 @@ public class Main {
         return b;
     }
 
-    /**
-     * This method process the notes in order to preload the necesary equations and store them
-     * in a Hashtable.
-     * @param notes
-     */
-    public static void processNotes(String notes) {
-        System.out.println("Processing: " + notes);
-        String[] notesWords = notes.split("\n");
-        for (String note : notesWords) {
-            BufferedImage bImage = null;
-            String equation = null;
-            if (note.contains("PROCSLIDE")) {
-                //then we change the slide
-                if (note.contains("<<")) {
-                    String[] notesDivided = note.split("<<");
-                    //we generate the image here and add it to the HashTable
-                    equation = notesDivided[1].substring(0, notesDivided[1].length() - 2);
-                    bImage = createImage(equation);
-                }
-            } else if (note.contains("<<") && note.contains(">>")){
-                //we post and get an image to post
-                equation = note.substring(2, note.length() - 2);
-                bImage = createImage(equation);
-            } else {/*Ignore it*/}
-            if (bImage != null && equation != null) {
-                //Send it to server
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                try {
-                    ImageIO.write(bImage, "jpg", baos);
-                    byte[] bytes = baos.toByteArray();
-                    //We generate the request and send the file to the server to the given session
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-            }
-        }
-    }
 
     /**
      * This function returns the current position of the active presentation.
@@ -162,7 +126,7 @@ public class Main {
      * This script gets all the notes from the presentation and puts them in the instance variable
      * presentationNotes.
      */
-    public static void getAllNotes() throws IOException, ScriptException {
+    public static File getAllNotes() throws IOException, ScriptException {
         //Create the file to store the notes if it doesn't exits
         File file = new File("/Users/David/Desktop/Notes.txt");
         if (!file.exists()) {
@@ -175,6 +139,8 @@ public class Main {
         while ((line = reader.readLine()) != null) {
             presentationNotes = presentationNotes + line + "\n";
         }
+        //We now process the notes and send the images to the server
+        return file;
     }
 
     /**

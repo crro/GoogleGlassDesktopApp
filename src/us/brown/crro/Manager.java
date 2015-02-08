@@ -48,33 +48,23 @@ public class Manager extends JFrame {
         private class ButtonListener implements ActionListener {
 
             @Override
-            public void actionPerformed(ActionEvent evß) {
+            public void actionPerformed(ActionEvent ev) {
                 String code = _textArea.getText();
-                URI uri = URI.create("ws://googleglassserver.herokuapp.com/incoming/");
                 try {
-                    // We first get all the notes
-                    Main.getAllNotes();
+                    //We start the presentation
+                    Main.executePresentationTask(Main.START_PRESENTATION);
+                    //We start the connection
+                    AppEngineConnection app = new AppEngineConnection(code);
+                    //We publish the notes
+                    app.publishNotes();
+                    //We start the timers
+                    app.startTimers();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ScriptException e) {
                     e.printStackTrace();
                 }
-                // This now has to sned them to app engine.
-                WebSocketClient client = new WebSocketClient();
-                try
-                {
-                    client.start();
-                    // The socket that receives events
-                    PowerPointSocket socket = new PowerPointSocket();
-                    // Attempt Connect
-                    Future<Session> fut = client.connect(socket,uri);
-                    // Wait for Connect
-                    Session session = fut.get();
-                    // Send a message
-                    session.getRemote().sendString("Join tkraska");
-                    //new ImageUploader();
 
-                }
                 catch (Throwable t)
                 {
                     t.printStackTrace(System.err);
