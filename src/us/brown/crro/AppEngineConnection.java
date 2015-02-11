@@ -129,6 +129,7 @@ public class AppEngineConnection {
     public void processNotes(String notes) {
         System.out.println("Processing: " + notes);
         String[] notesWords = notes.split("\n");
+        updateIndexRemote(0);
         for (String note : notesWords) {
             BufferedImage bImage = null;
             String equation = null;
