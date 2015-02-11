@@ -148,34 +148,35 @@ public class Main {
      */
     public static void main(String[] args) {
         new Manager();
-        URI uri = URI.create("ws://googleglassserver.herokuapp.com/incoming/");
-        try {
-            // We first get all the notes
-            getAllNotes();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ScriptException e) {
-            e.printStackTrace();
-        }
-        // We create the socket
-        WebSocketClient client = new WebSocketClient();
-        try
-        {
-            client.start();
-            // The socket that receives events
-            PowerPointSocket socket = new PowerPointSocket();
-            // Attempt Connect
-            Future<Session> fut = client.connect(socket,uri);
-            // Wait for Connect
-            Session session = fut.get();
-            // Send a message
-            session.getRemote().sendString("Join tkraska");
-            //new ImageUploader();
-
-        }
-        catch (Throwable t)
-        {
-            t.printStackTrace(System.err);
-        }
+        //UNCOMMENT THIS TO USE WITH HEROKU
+//        URI uri = URI.create("ws://googleglassserver.herokuapp.com/incoming/");
+//        try {
+//            // We first get all the notes
+//            getAllNotes();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ScriptException e) {
+//            e.printStackTrace();
+//        }
+//        // We create the socket
+//        WebSocketClient client = new WebSocketClient();
+//        try
+//        {
+//            client.start();
+//            // The socket that receives events
+//            PowerPointSocket socket = new PowerPointSocket();
+//            // Attempt Connect
+//            Future<Session> fut = client.connect(socket,uri);
+//            // Wait for Connect
+//            Session session = fut.get();
+//            // Send a message
+//            session.getRemote().sendString("Join tkraska");
+//            //new ImageUploader();
+//
+//        }
+//        catch (Throwable t)
+//        {
+//            t.printStackTrace(System.err);
+//        }
     }
 }

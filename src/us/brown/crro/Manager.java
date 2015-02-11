@@ -32,9 +32,9 @@ public class Manager extends JFrame {
         private JButton _button;
 
         public MainPanel() {
-            this.setPreferredSize(new Dimension(250, 75));
+            this.setPreferredSize(new Dimension(330, 75));
             this.setLayout(new BorderLayout());
-            _button = new JButton("ENTER");
+            _button = new JButton("START PRESENTATION");
             _label = new JLabel("Please enter the code that appears in the Glass App");
             _textArea = new JTextArea();
 
@@ -49,7 +49,8 @@ public class Manager extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent ev) {
-                String code = _textArea.getText();
+                String code = _textArea.getText().replaceAll("(\\r|\\n)", "");
+                _label.setText("PLEASE DO NOT CLOSE THIS WINDOW");
                 try {
                     //We start the presentation
                     Main.executePresentationTask(Main.START_PRESENTATION);
