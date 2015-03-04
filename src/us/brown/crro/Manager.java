@@ -20,7 +20,7 @@ public class Manager extends JFrame {
 
     public Manager() {
 
-        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(new MainPanel());
         this.pack();
         this.setVisible(true);
@@ -52,12 +52,13 @@ public class Manager extends JFrame {
                 String code = _textArea.getText().replaceAll("(\\r|\\n)", "");
                 _label.setText("PLEASE DO NOT CLOSE THIS WINDOW");
                 try {
-                    //We start the presentation
-                    Main.executePresentationTask(Main.START_PRESENTATION);
+
                     //We start the connection
                     AppEngineConnection app = new AppEngineConnection(code);
                     //We publish the notes
                     app.publishNotes();
+                    //We start the presentation
+                    Main.executePresentationTask(Main.START_PRESENTATION);
                     //We start the timers
                     app.startTimers();
                 } catch (IOException e) {

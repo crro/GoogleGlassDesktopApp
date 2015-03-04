@@ -82,11 +82,11 @@ public class AppEngineConnection {
     }
 
     public void startTimers() {
-        _timerIndex.start();
+        //_timerIndex.start();
         _timerUpdate.start();
     }
     public void stopTimers() {
-        _timerIndex.stop();
+        //_timerIndex.stop();
         _timerUpdate.stop();
     }
 
@@ -198,7 +198,7 @@ public class AppEngineConnection {
             // We can only go to the next slde or to the previous, so we need to figure out the current location and
             //then move it only based on that.
             int currIndex = Main.getCurrentIndex() - 1;//The position returned by the index is 1-indexed.
-            while (currIndex != newIndex && currIndex > 0) {
+            while (currIndex != newIndex && currIndex > -1) {
                 if (currIndex > newIndex) {
                     Main.executePresentationTask(Main.PREVIOUS_SLIDE);
                     currIndex--;

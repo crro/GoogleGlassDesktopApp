@@ -28,12 +28,18 @@ public class Main {
     /**
      * These are the file paths of the scripts corresponding to the possible actions to be executed.
      */
-    public static final String START_PRESENTATION = "/Users/David/Development/scripts/RunSlideShow.txt";
+    /*public static final String START_PRESENTATION = "/Users/David/Development/scripts/RunSlideShow.txt";
     public static final String NEXT_SLIDE = "/Users/David/Development/scripts/NextSlide.txt";
     public static final String PREVIOUS_SLIDE = "/Users/David/Development/scripts/PreviousSlide.txt";
     public static final String END_PRESENTATION = "/Users/David/Development/scripts/ExitSlideShow.txt";
     public static final String GET_NOTES = "/Users/David/Development/scripts/FINALNotesPPTX.txt";
-    public static final String GET_POSITION = "/Users/David/Development/scripts/CurrentPosition.scpt";
+    public static final String GET_POSITION = "/Users/David/Development/scripts/CurrentPosition.scpt";*/
+    public static final String START_PRESENTATION = "scripts/RunSlideShow.txt";
+    public static final String NEXT_SLIDE = "scripts/NextSlide.txt";
+    public static final String PREVIOUS_SLIDE = "scripts/PreviousSlide.txt";
+    public static final String END_PRESENTATION = "scripts/ExitSlideShow.txt";
+    public static final String GET_NOTES = "scripts/FINALNotesPPTX.txt";
+    public static final String GET_POSITION = "scripts/CurrentPosition.scpt";
 
     //These are the presentation notes in text.
     public static String presentationNotes = "";
